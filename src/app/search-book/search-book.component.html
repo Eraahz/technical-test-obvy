@@ -1,0 +1,53 @@
+<!-- Search bar -->
+<form class="form-inline d-flex justify-content-center md-form form-sm active-purple active-purple-2 mt-2">
+  <i class="fas fa-search" aria-hidden="true"></i>
+  <input (keyup.enter)="onSearch(search.value)" #search name="searchinput"
+    class="form-control form-control-sm ml-3 w-75" type="search"
+    placeholder="Rechercher un livre avec un titre, auteur, genre ou code ISBN..." aria-label="Search">
+  <button mdbBtn (click)="onSearch(search.value)" type="button" color="primary" mdbWavesEffect>Rechercher</button>
+</form>
+
+<div class="container">
+
+
+  <div *ngIf="books">
+
+    <div class="row">
+
+      <div class="col-sm-4 d-flex align-items" *ngFor="let book of books">
+        <!-- Card Light -->
+        <div class="card w-75">
+
+          <!-- Card image -->
+          <div class="view overlay">
+            <img *ngIf="book.volumeInfo.imageLinks; else aucune_image" class="card-img-top"
+              src={{book.volumeInfo.imageLinks.thumbnail}} />
+            <ng-template #aucune_image class="card-text">
+              <h3>Aucune image trouvée.</h3>
+            </ng-template>
+          </div>
+
+          <!-- Card content -->
+          <div class="card-body">
+
+            <!-- Title -->
+            <h4 class="card-title">
+              {{book.volumeInfo.title | slice:0:40}}{{book.volumeInfo.title.length > 40 ? '...' : ''}}</h4>
+            <hr>
+            <!-- Description -->
+            <p *ngIf="book.volumeInfo.description; else aucune_description" class="card-text">
+              {{book.volumeInfo.description | slice:0:60}}{{book.volumeInfo.description.length > 60 ? '...' : ''}}</p>
+            <ng-template #aucune_description class="card-text">Aucune description trouvée.</ng-template>
+            <!-- Link -->
+            <a [routerLink]="['/search', book.id]" class="black-text d-flex justify-content-end">
+              <h6>Détails <i class="fas fa-angle-double-right"></i></h6>
+            </a>
+
+          </div>
+
+        </div>
+        <!-- Card Light -->
+      </div>
+    </div>
+  </div>
+</div>

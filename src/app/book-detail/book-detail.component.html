@@ -1,0 +1,75 @@
+<div *ngIf="book">
+
+    <div class="container w-75 mt-3">
+
+        <!-- image -->
+        <div class="row">
+            <div class="col-md-3">
+                <img *ngIf="book.volumeInfo.imageLinks; else aucune_image"
+                    src={{book.volumeInfo.imageLinks.smallThumbnail}} />
+                <ng-template #aucune_image>
+                    <img src="https://via.placeholder.com/75">
+                </ng-template>
+            </div>
+
+            <div class="col-md-6">
+                <h4 id="book-title"><strong>Titre : {{book.volumeInfo.title}}</strong></h4>
+            </div>
+
+        </div>
+
+        <!-- Description -->
+        <h4>Description :</h4>
+        <p>{{book.volumeInfo.description}}</p>
+
+        <!-- Category -->
+        <h4>Catégorie(s) :</h4>
+        <p>{{book.volumeInfo.categories}}</p>
+
+        <!-- Author(s) -->
+        <h4>Auteur(s) :</h4>
+        <p>{{book.volumeInfo.authors}}</p>
+
+        <!-- Pages -->
+        <h4>Nombre de pages :</h4>
+        <p>{{book.volumeInfo.pageCount}}</p>
+
+        <!-- Published date -->
+        <h4>Date de publication :</h4>
+        <p>{{book.volumeInfo.publishedDate}}</p>
+
+        <!-- Publisher -->
+        <h4>Editeur :</h4>
+        <p>{{book.volumeInfo.publisher}}</p>
+
+        <select name="state" [(ngModel)]="selectedBookOption">
+            <option *ngFor="let state of states" [ngValue]="state.state">
+                {{state.description}}</option>
+        </select>
+
+        <div *ngIf="selectedBookOption == 'prete'">
+            <p>Le livre est actuellement prêté à un ami. Voici ses informations :</p>
+
+            <form>
+                <div class="md-form form-group mt-5">
+                    <input name="date" type="date" (ngModelChange)="datePret = $event"
+                        [ngModel]="datePret | date:'yyyy-MM-dd'" class="form-control">
+                    <label for="date">Date du prêt</label>
+                </div>
+
+                <div class="md-form form-group mt-5">
+                    <input mdbInput name="name" type="text" [(ngModel)]="name" class="form-control" id="name">
+                    <label for="name">Son nom</label>
+                </div>
+
+                <div class="md-form form-group mt-5">
+                    <textarea name="comment" type="text" [(ngModel)]="comment" id="comment"
+                        class="md-textarea form-control" mdbInput></textarea>
+                    <label for="comment">Commentaire</label>
+                </div>
+            </form>
+
+        </div>
+
+        <button mdbBtn (click)="save()" type="button" color="primary" mdbWavesEffect>Sauvegarder</button>
+    </div>
